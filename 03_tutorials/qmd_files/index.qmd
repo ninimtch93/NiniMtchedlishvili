@@ -1,0 +1,116 @@
+---
+editor: 
+  markdown: 
+    wrap: sentence
+---
+
+# Introduction
+
+**Welcome to Computational Text Analysis, Jour 389R/689R, for the Fall 2024.**
+
+This course introduces students to key skills and concepts in the digital humanities and how they can be applied to content analysis.
+Students will learn how to gather textual data, process it and conduct computational textual analysis, sentiment analysis, narrative analysis, machine learning and topic modeling using the R programming language.
+Then, you will process your findings into various data visualization programs.
+
+Students can learn these skills using some prepared datasets from the professor or bring their own projects, subject to prior arrangement with the professor.
+
+This class welcomes people who have never coded.
+You will learn R, the open-source statistical software that’s widely used in newsrooms and academia.
+The training on R will be focused on news content analysis tasks.
+
+We have some basic goals for you to reach in this class.
+Here are the course learning outcomes:
+
+### Basic Data Analysis Techniques
+
+-   You will demonstrate a basic to intermediate proficiency in R, a popular open source statistical program, through the following tasks.
+
+-   You will install relevant software libraries such as tidyverse and how to discover new software libraries to meet your needs.
+
+-   You apply your knowledge about the software to load structured and unstructured data, perform basic data cleaning, solve basic data problems with numeric, character and date data fields.
+
+-   You will create basic queries to produce summary tables and descriptive statistics.
+    You will create basic data visualizations.
+
+-   You will compose a full coding report using markdown language which can be produced in websites and other documents.
+
+### Digital Humanities Research
+
+-   You will be trained on best practices to extract specific material from digitized historical records You will recognize and interpret metadata (such as headline, date, publication) and use to conduct analysis of journalistic content.
+
+-   You will demonstrate proficiency in translating PDF and other documents into raw text prepared for machine learning.
+
+-   You will apply basic machine learning tasks on the prepared raw text such as sentiment analysis.
+
+-   You will evaluate the output from sentiment analysis and other machine learning tools to describe narrative patterns in the Journalistic texts.
+
+### Content Analysis
+
+-   You apply basic principles of qualitative and quantitative content analysis when examining a corpus of news content.
+
+-   You will create a coding schema with clear categories by which to analyze the news content.
+
+-   You will construct basic computer code to categorize news content according to your coding schema.
+
+### Writing and Analysis
+
+-   You will acquire historical research skills to provide the necessary context for your data research.
+
+-   You will synthesize your findings and data analysis into a progress report memo.
+
+## Installations
+
+This book begins with a basic review of Google Sheets and then shifts to the R statistical language.
+To follow along, you'll do the following:
+
+1.  Install the R language on your computer.
+    Go to the [this website](http://lib.stat.cmu.edu/R/CRAN/), click download R based on your operating system.
+    If that link somehow doesn't work, check [R Project website](https://www.r-project.org/) and find a different location.
+
+2.  Install [R Studio Desktop](https://www.rstudio.com/products/rstudio/#Desktop).
+    The free version is great.
+
+Going forward, you'll see passages like this:
+
+```{r eval=FALSE}
+install.packages("tidyverse")
+```
+
+That is code that you'll need to run common software packages in your R Studio.
+
+## About this book
+
+Rob Wells has provided lessons from his own research projects and adapted a collection of class materials compiled by various data journalism professors around the country.
+Many thanks to Matt Waite at the University of Nebraska-Lincoln's College of Journalism and Mass Communications and Sarah Cohen of Arizona State University, Sean Mussenden and Derek Willis, at the University of Maryland Philip Merrill College of Journalism.
+
+There's some things you should know about it:
+
+-   It is free for students.
+-   The topics will remain the same but the text is going to be constantly tinkered with.
+-   What is the work of the authors is copyright Rob Wells 2024, Sean Mussenden and Derek Willis 2022, Matt Waite 2020 and Sarah Cohen 2022.
+-   The text is [Attribution-NonCommercial-ShareAlike 4.0 International](https://creativecommons.org/licenses/by-nc-sa/4.0/) Creative Commons licensed. That means you can share it and change it, but only if you share your changes with the same license and it cannot be used for commercial purposes. I'm not making money on this so you can't either.
+-   As such, the whole book -- authored in Quarto -- in its original form is [open sourced on Github](https://github.com/wellsdata/data_journalism_class). Pull requests welcomed!
+
+## What we'll cover
+
+-   Spreadsheets
+-   R Basics
+-   Replication, Data Diary
+-   Data basics and structures
+-   Aggregates
+-   Mutating
+-   Working with dates
+-   Filters
+-   Data cleaning techniques, Janitor
+-   Pulling Data from PDFs
+-   Joins
+-   Visualizing for reporting: Basics
+-   Visualizing for reporting: Publishing
+-   Text analysis basics
+-   Writing with and about data
+-   Data journalism ethics
+-   Tokenizing text
+-   Performing sentiment analysis
+-   Keyword in context
+-   Basic narrative analysis
+-   Topic modeling
