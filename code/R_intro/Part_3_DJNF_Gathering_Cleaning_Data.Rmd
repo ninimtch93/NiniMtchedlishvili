@@ -6,7 +6,7 @@ editor_options:
 ---
 
 ::: {style="text-align: center; color: #337DFF;"}
-# Data Gathering & Cleaning, Basics of APIs 
+# Data Gathering & Cleaning, Basics of APIs
 
 ### Dow Jones News Fund \@ Merrill College
 
@@ -26,26 +26,28 @@ robwells@umd.edu
 LinkedIn: https://www.linkedin.com/in/rob-wells-7929329/ 
 ver. 5/29/2024 
 ```
-<br> 
+
+<br>
 
 ## Learning Goals
 
-    Understand the basics of APIs.  
-    Gather data in R through APIs and web URLs. 
-    Use techniques to clean and structure data for analysis 
+```         
+Understand the basics of APIs.  
+Gather data in R through APIs and web URLs. 
+Use techniques to clean and structure data for analysis 
+```
 
-<br> 
-<br> 
+<br> <br>
 
-#### APIs - basics   
+#### APIs - basics
 
+[A beginner's guide to
+APIs](https://medium.com/@LewisMenelaws/a-beginners-guide-to-web-apis-and-how-they-will-help-you-23923a0da450)
 
-[A beginner's guide to APIs](https://medium.com/@LewisMenelaws/a-beginners-guide-to-web-apis-and-how-they-will-help-you-23923a0da450)
+[A gentle introduction to APIs for data
+journalists](https://trendct.org/2016/12/29/fetching-airport-delays-with-python-a-gentle-guide-to-apis-for-journalists/)
 
-[A gentle introduction to APIs for data journalists](https://trendct.org/2016/12/29/fetching-airport-delays-with-python-a-gentle-guide-to-apis-for-journalists/)
-  
 ### Import from an API
-
 
 ```{r include=FALSE}
 #background on tidyverse: https://www.tidyverse.org/packages/
@@ -62,12 +64,14 @@ library(tidyr)
 ```
 
 **Details about software: jsonlite**
+
 ```{r}
 vignette("json-apis", package = "jsonlite")
 
 ```
 
 **Example: Racing Data**
+
 ```{r}
 res <- fromJSON('http://ergast.com/api/f1/2004/1/results.json')
 #head(res)
@@ -75,16 +79,16 @@ res <- fromJSON('http://ergast.com/api/f1/2004/1/results.json')
 
 **Nested list**
 
-<br> 
+<br>
 
-<img src="API_drivers.png" width="800" height="400" />
-<br>   
-<br> 
+<img src="API_drivers.png" width="800" height="400"/> <br>\
+<br>
 
-  **Click on green arrow icon and that will display path directory in the console in R Studio**
-      Copy that path into your code
+**Click on green arrow icon and that will display path directory in the
+console in R Studio** Copy that path into your code
 
-  **Unpack it**
+**Unpack it**
+
 ```{r}
 drivers <- res[["MRData"]][["RaceTable"]][["Races"]][["Results"]][[1]][["Driver"]]
 ```
@@ -93,27 +97,27 @@ drivers <- res[["MRData"]][["RaceTable"]][["Races"]][["Results"]][[1]][["Driver"
 colnames(drivers)
 ```
 
-
 <br>
 
 ### Example: Arkansas Agent and Broker Data API
 
-
-[Here's the source data from the state of Arkansas](https://services.arcgis.com/PwY9ZuZRDiI5nXUB/ArcGIS/rest/services/Agent_And_Broker_Locations/FeatureServer/layers)
+[Here's the source data from the state of
+Arkansas](https://services.arcgis.com/PwY9ZuZRDiI5nXUB/ArcGIS/rest/services/Agent_And_Broker_Locations/FeatureServer/layers)
 
 ```{r}
 brokerjson <- fromJSON('https://services.arcgis.com/PwY9ZuZRDiI5nXUB/ArcGIS/rest/services/Agent_And_Broker_Locations/FeatureServer/0/query?where=0%3D0&objectIds=&time=&geometry=&geometryType=esriGeometryEnvelope&inSR=&spatialRel=esriSpatialRelIntersects&resultType=none&distance=0.0&units=esriSRUnit_Meter&relationParam=&returnGeodetic=false&outFields=Last_Name%2CFirst_Name%2CMiddle_Name%2CEmail_Address%2CAddress%2CState%2CZip%2CPhone%2CLic_Type%2CEXCEL_POINT_Y%2CEXCEL_POINT_X%2CFID&returnGeometry=true&featureEncoding=esriDefault&multipatchOption=xyFootprint&maxAllowableOffset=&geometryPrecision=&outSR=&defaultSR=&datumTransformation=&applyVCSProjection=false&returnIdsOnly=false&returnUniqueIdsOnly=false&returnCountOnly=false&returnExtentOnly=false&returnQueryGeometry=false&returnDistinctValues=false&cacheHint=false&orderByFields=&groupByFieldsForStatistics=&outStatistics=&having=&resultOffset=&resultRecordCount=&returnZ=false&returnM=false&returnExceededLimitFeatures=false&quantizationParameters=&sqlFormat=none&f=pjson&token=')
 #head(brokerjson )
 ```
 
-
 **Pulls in the data that matters to 'broker'**
+
 ```{r}
 broker <- brokerjson[["features"]][["attributes"]]
 glimpse(broker)
 ```
 
 **Add system date, clean**
+
 ```{r}
 broker$date <- Sys.Date()
 
@@ -123,7 +127,7 @@ broker <- clean_names(broker)
 
 **Create a new column with city name**
 
-**We split the column at the comma to create a new city column** 
+**We split the column at the comma to create a new city column**
 
 ```{r warning=FALSE}
 broker <- separate(broker, col = address, into = c("street", "city"), sep = ",")
@@ -131,6 +135,7 @@ broker <- separate(broker, col = address, into = c("street", "city"), sep = ",")
 ```
 
 **Create a table: Count cities**
+
 ```{r}
 #call your new table broker_city
 
@@ -173,21 +178,23 @@ broker_city %>%
        x="")
 ```
 
+## Analysis of San Francisco Police Calls for Service Data
 
-## Analysis of San Francisco Police Calls for Service Data  
-
-[**Here is the original dataset: 3,048,797 records**](https://data.sfgov.org/Public-Safety/Police-Department-Calls-for-Service/hz9m-tj6z/data)
+[**Here is the original dataset: 3,048,797
+records**](https://data.sfgov.org/Public-Safety/Police-Department-Calls-for-Service/hz9m-tj6z/data)
 
 [**Access the API**](https://datasf.org/opendata/developers/)
 
 [**Import from an API**](https://data.sfgov.org/resource/hz9m-tj6z.json)
 
 **Load Data**
+
 ```{r}
 SF <- rio::import("https://docs.google.com/spreadsheets/d/1-nkosLJKkfeLSl-UG82DDyiEw5-62kX2alS6ICG9iuk/edit#gid=552005485", sheet = "SF Police_Department_Calls_for_") 
 ```
 
-**Clean column names, Process dates** 
+**Clean column names, Process dates**
+
 ```{r}
 #This cleans column names
 SF <- janitor::clean_names(SF)
@@ -199,16 +206,18 @@ SF$year <- year(SF$call_date2)
 
 ### Cleaning Dispositions
 
-**Total by disposition: Count**  
+**Total by disposition: Count**
+
 ```{r}
 
 #put the count total in an object called Action
 
 ```
 
-**Decode Police Radio Codes**   
+**Decode Police Radio Codes**
 
-**A guide to what these disposition codes mean**   
+**A guide to what these disposition codes mean**
+
 ```{r}
 copspeak <- rio::import("https://docs.google.com/spreadsheets/d/1l86DSZ5LWxlXTliXu06Iai0DiYXlJE4hUYBeddL0XXg/edit#gid=554934632", sheet ="RadioCodes")
 #head(copspeak)
@@ -218,8 +227,7 @@ copspeak <- rio::import("https://docs.google.com/spreadsheets/d/1l86DSZ5LWxlXTli
 #GOA = Gone on arrival
 ```
 
-
-**Translate Cop Jargon to English**   
+**Translate Cop Jargon to English**
 
 The disposition column is in cop-speak. We need to clean it up
 
@@ -227,15 +235,18 @@ Step #1: Use mutate to duplicate the column you want to mess with
 
 **Mutate command**
 
-    Create new column(s) in the data, or change existing column(s). 
-    mutate() adds new variables and preserves existing
-    Example:
-    mtcars <- as.data.frame(mtcars)
-    View(mtcars)
-  
-    mtcars2 <- mtcars %>% as_tibble() %>% mutate(
-    cyl2 = cyl * 2,
-    cyl4 = cyl2 * 2)
+```         
+Create new column(s) in the data, or change existing column(s). 
+mutate() adds new variables and preserves existing
+Example:
+mtcars <- as.data.frame(mtcars)
+View(mtcars)
+
+mtcars2 <- mtcars %>% as_tibble() %>% mutate(
+cyl2 = cyl * 2,
+cyl4 = cyl2 * 2)
+```
+
 ```{r}
 SF <- SF %>% 
   mutate(disposition1 = disposition)
@@ -243,12 +254,15 @@ SF <- SF %>%
 
 ### Rename specific text strings
 
-Example:   
+Example:
 
-     str_replace_all(test.vector, pattern=fixed('-'),     replacement=fixed(':') )
-     [Details on string manipulation - follow this link](    https://dereksonderegger.github.io/570L/13-string-manipulation.html)
+```         
+ str_replace_all(test.vector, pattern=fixed('-'),     replacement=fixed(':') )
+ [Details on string manipulation - follow this link](    https://dereksonderegger.github.io/570L/13-string-manipulation.html)
+```
 
 **Replace ABA with "Abated"**
+
 ```{r}
 SF$disposition1 <- str_replace_all(SF$disposition1, pattern=fixed('ABA'), replacement=fixed('Abated') )
 #Again with ADM
@@ -257,7 +271,8 @@ SF$disposition1 <- str_replace_all(SF$disposition1, pattern=fixed('ADM'), replac
 
 **Clean disposition types**
 
-case_when searches for an item and transforms the data into a new column using mutate
+case_when searches for an item and transforms the data into a new column
+using mutate
 
 ```{r}
 SF <- SF %>%
@@ -284,6 +299,7 @@ SF <- SF %>%
 ```
 
 **Compare our renamed variables to the original disposition**
+
 ```{r}
 Action <- SF %>% 
   count(disposition1, disposition) %>% 
@@ -291,8 +307,8 @@ Action <- SF %>%
 #head(Action)
 ```
 
+### Chart Dispositions
 
-### Chart Dispositions  
 ```{r}
 Action %>% 
   filter(n > 100) %>% 
@@ -321,8 +337,8 @@ Types <- SF %>% count(original_crime_type_name) %>%
 # 915 Encampment
 ```
 
-
 **Cleaning Sequence**
+
 ```{r}
 #convert all text to lowercase
 SF$crime1 <- tolower(SF$original_crime_type_name)
@@ -341,7 +357,7 @@ SF <- separate(data = SF, col = crime1, into = c("crime2", "crime3", "crime4"), 
 
 ```
 
-For this lesson, we will clean just one column. 
+For this lesson, we will clean just one column.
 
 ```{r}
 #Clean Crime2
@@ -370,6 +386,7 @@ SF <- SF %>%
 ```
 
 **Count crime_cleaned**
+
 ```{r}
 #remember this is a partial total
 #arrange the results in descending order
@@ -377,6 +394,7 @@ SF <- SF %>%
 ```
 
 **Compare to Types Table**
+
 ```{r}
 #Look at the Types table: some columns have one code, some have two.
 Types %>% 
@@ -400,11 +418,10 @@ SF %>%
        x="Action")
 ```
 
-
-
-**Arrest Trend: What is the trend for arrests over the time period?**  
+**Arrest Trend: What is the trend for arrests over the time period?**
 
 Process dates using lubidate
+
 ```{r}
 SF <- SF %>% 
   mutate(yearmo = format(call_date2, "%Y-%m"))
@@ -429,6 +446,7 @@ SF %>%
 ```
 
 **Hours when people complain?**
+
 ```{r}
 #format to hours
 SF$date_time <- mdy_hm(SF$call_date_time)
@@ -447,7 +465,6 @@ SF %>%
        y="Number of Calls",
        x="Hour")  
 ```
-
 
 ### Your Turn
 
@@ -480,8 +497,8 @@ SF %>%
 
 ```
 
-
 **Super Bonus Nerd Zone**
+
 ```{r}
 #Clean all of the Crime Columns
 #In the example above, we cleaned just the crime2 column. 
@@ -490,12 +507,12 @@ SF %>%
 
 ```
 
-
 <br>
 
 ### Appendix
 
-[Police radio codes data](https://data.sfgov.org/api/views/hz9m-tj6z/files/b60ee24c-ae7e-4f0b-a8d5-8f4bd29bf1de?download=true&filename=Radio%20Codes%202016.xlsx)
+[Police radio codes
+data](https://data.sfgov.org/api/views/hz9m-tj6z/files/b60ee24c-ae7e-4f0b-a8d5-8f4bd29bf1de?download=true&filename=Radio%20Codes%202016.xlsx)
 
 <br>
 
